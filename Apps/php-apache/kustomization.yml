@@ -1,0 +1,6 @@
+namespace: php-apache
+resources:
+  - deployment.yml
+  - service.yml
+  - namespace.yml
+  - scaledobject.yml

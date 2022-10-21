@@ -1,0 +1,35 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: php-apache-scale
+spec:
+  scaleTargetRef:
+    name: php-apache
+    kind: deployment
+  pollingInterval: 5
+  cooldownPeriod:  5
+  minReplicaCount: 2
+  maxReplicaCount: 20
+  advanced:
+    restoreToOriginalReplicaCount: false
+    horizontalPodAutoscalerConfig:
+      behavior:
+        scaleDown:
+          stabilizationWindowSeconds: 10
+          policies:
+          - type: Percent
+            value: 100
+            periodSeconds: 1
+        scaleUp:
+          stabilizationWindowSeconds: 0
+          policies:
+          - type: Percent
+            value: 100
+            periodSeconds: 1
+  triggers:
+  - type: cron
+    metadata:
+      timezone: Europe/Budapest
+      start: 0 8 * * 0-6
+      end: 0 20 * * 0-6
+      desiredReplicas: "6"

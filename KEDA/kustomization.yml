@@ -1,0 +1,5 @@
+namespace: keda
+
+resources:
+  - namespace.yml
+  - keda-controller.yml
